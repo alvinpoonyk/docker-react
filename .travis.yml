@@ -1,0 +1,15 @@
+# Tell travis we need sudo permissions to execute this build
+sudo: required
+
+# Tell travis that we need docker for the build to run so that travis will install them
+services:
+  - docker
+
+before_install:
+  # the comamnd that should be executed to build our docker image
+  - docker build -t alvinpoonyk/docker-react:latest -f Dockerfile.dev .
+
+# Note: Travis automatically assumes that our test suite runs and exits automatically
+# however default behaviour of NPM is that it will keep on running
+script:
+  - docker run -e CI=true alvinpoonyk/docker-react:latest npm run test -- --coverage

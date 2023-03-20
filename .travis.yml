@@ -13,3 +13,20 @@ before_install:
 # however default behaviour of NPM is that it will keep on running
 script:
   - docker run -e CI=true alvinpoonyk/docker-react:latest npm run test -- --coverage
+
+deploy:
+  # travis CI comes with different provider by default such as aws elasticbeanstalk 
+  provider: elasticbeanstalk
+  region: "ap-southeast-1"
+  # name of the app in console
+  app: "docker-react"
+  # name of the environment in console
+  env: "Dockerreact-env"
+  # name of the S3 bucket in the console
+  bucket_name: "elasticbeanstalk-ap-southeast-1-590648086782"
+  bucket_path: "docker-react"
+  on:
+    # this means that code when there is code change in master, time to deploy
+    branch: "master"
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: "$AWS_SECRET_KEY"
